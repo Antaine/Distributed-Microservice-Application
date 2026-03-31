@@ -10,13 +10,13 @@ import org.springframework.data.domain.Page;
 public interface ICharacterService {
 
 	//Create New Character
-    CharacterDto createCharacter(CharacterDto characterDto);
+   // CharacterDto createCharacter(CharacterDto characterDto);
     
     //Get All Characters
     List<CharacterDto> getAllCharacters();
     
     //Get User Characters
-    List<CharacterDto> getCharactersByUserId(Long userId);
+  //  List<CharacterDto> getCharactersByUserId(Long userId);
     
     //Delete Character
     void deleteCharacter(Long characterId);
@@ -25,7 +25,7 @@ public interface ICharacterService {
     List<CharacterDto> getCharactersByDateRange(LocalDate startDate,LocalDate endDate);
     
     //Update Character
-    void updateCharacter(Long characterId,CharacterDto characterDto);
+  //  void updateCharacter(Long characterId,CharacterDto characterDto);
     
     //Get Character by Character ID
     CharacterDto getCharacterById(Long characterId);

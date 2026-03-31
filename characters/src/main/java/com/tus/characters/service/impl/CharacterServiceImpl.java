@@ -2,11 +2,9 @@ package com.tus.characters.service.impl;
 
 import com.tus.characters.dto.CharacterDto;
 import com.tus.characters.entity.Character;
-import com.tus.characters.entity.User;
 import com.tus.characters.exceptions.ResourceNotFoundException;
 import com.tus.characters.mapper.CharacterMapper;
 import com.tus.characters.repository.CharactersRepository;
-import com.tus.characters.repository.UserRepository;
 import com.tus.characters.service.ICharacterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +21,7 @@ public class CharacterServiceImpl implements ICharacterService {
 
 	//Constants
     private final CharactersRepository charactersRepository;
-    private final UserRepository userRepository;
+//    private final UserRepository userRepository;
     private static final String USER = "User";
     private static final String USER_ID = "userId";
     private static final String CHARACTER = "Character";
@@ -33,7 +31,7 @@ public class CharacterServiceImpl implements ICharacterService {
             List.of("characterId", "characterClass", "characterRace", "level", "creationDate");
 
     //Create Character
-    @Override
+/*    @Override
     public CharacterDto createCharacter(CharacterDto characterDto) {
         User user = userRepository.findById(characterDto.getUserId())
                 .orElseThrow(() ->new ResourceNotFoundException("User", "userId",String.valueOf(characterDto.getUserId())));
@@ -41,7 +39,7 @@ public class CharacterServiceImpl implements ICharacterService {
         Character character = CharacterMapper.mapToCharacter(characterDto, user);
         Character savedCharacter = charactersRepository.save(character);
         return CharacterMapper.mapToCharacterDto(savedCharacter);
-    }
+    }*/
 
     //Return all Characters
     @Override
@@ -52,7 +50,7 @@ public class CharacterServiceImpl implements ICharacterService {
                 .collect(Collectors.toList());
     }
 
-    @Override
+/*    @Override
     public List<CharacterDto> getCharactersByUserId(Long userId) {
         User user = userRepository.findById(userId)
         		.orElseThrow(() ->new ResourceNotFoundException("User", "userId",userId.toString()));
@@ -61,7 +59,7 @@ public class CharacterServiceImpl implements ICharacterService {
                 .stream()
                 .map(CharacterMapper::mapToCharacterDto)
                 .collect(Collectors.toList());
-    }
+    }*/
 
     //Delete Character
     @Override
@@ -82,7 +80,7 @@ public class CharacterServiceImpl implements ICharacterService {
     }
 
     //Update Character
-    @Override
+  /*  @Override
     public void updateCharacter(Long characterId,CharacterDto characterDto) {
 
         Character existingCharacter =
@@ -97,7 +95,7 @@ public class CharacterServiceImpl implements ICharacterService {
         existingCharacter.setLevel(characterDto.getLevel());
         existingCharacter.setUser(user);
         charactersRepository.save(existingCharacter);
-    }
+    }*/
 
     //Get Character by Character ID
     @Override

@@ -24,14 +24,14 @@ public class CharactersController {
 	private final ICharacterService characterService;
 
     // Create a new character
-	@Operation(summary = "Create new character")
+/*	@Operation(summary = "Create new character")
     @PostMapping
     public ResponseEntity<ResponseDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
         characterService.createCharacter(characterDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(CharacterConstants.STATUS_201, CharacterConstants.MESSAGE_201_CREATE));
-    }
+    }*/
 
     // Get all characters
     @GetMapping
@@ -43,13 +43,13 @@ public class CharactersController {
     }
 
     // Get characters by user ID
-    @GetMapping("/user/{userId}")
+ /*   @GetMapping("/user/{userId}")
     public ResponseEntity<List<CharacterDto>> getCharactersByUserId(@PathVariable Long userId) {
         List<CharacterDto> characters = characterService.getCharactersByUserId(userId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(characters);
-    }
+    }*/
 
     // Delete a character by ID
     @DeleteMapping("/{characterId}")
@@ -67,7 +67,7 @@ public class CharactersController {
 
         return ResponseEntity.ok(characterService.getCharactersByDateRange(startDate, endDate));
     }
-    @Operation(summary = "Update character")
+ /*   @Operation(summary = "Update character")
     @PutMapping("/{characterId}")
     public ResponseEntity<ResponseDto> updateCharacter(
             @PathVariable Long characterId,
@@ -78,7 +78,7 @@ public class CharactersController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseDto(CharacterConstants.STATUS_200,"Character updated successfully"));
-    }
+    }*/
     
     @GetMapping("/{characterId}")
     public ResponseEntity<CharacterDto> getCharacterById(@PathVariable Long characterId){

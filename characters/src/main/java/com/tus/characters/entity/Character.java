@@ -34,8 +34,7 @@ public class Character extends BaseEntity {
     private LocalDate creationDate;
 
     // Many characters belong to one user, Foreign KEY to User table, Loaded only when needed
-    @ManyToOne(fetch = FetchType.LAZY)@JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Long userId;
 
    //Sets Creation Date to Today
     @PrePersist
