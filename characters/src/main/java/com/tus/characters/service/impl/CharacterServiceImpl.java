@@ -1,12 +1,16 @@
 package com.tus.characters.service.impl;
 
+import com.tus.characters.client.UserServiceClient;
 import com.tus.characters.dto.CharacterDto;
+import com.tus.characters.dto.UserDto;
 import com.tus.characters.entity.Character;
 import com.tus.characters.exceptions.ResourceNotFoundException;
 import com.tus.characters.mapper.CharacterMapper;
 import com.tus.characters.repository.CharactersRepository;
 import com.tus.characters.service.ICharacterService;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,20 +30,30 @@ public class CharacterServiceImpl implements ICharacterService {
     private static final String USER_ID = "userId";
     private static final String CHARACTER = "Character";
     private static final String CHARACTER_ID = "characterId";
+    @Autowired
+    private UserServiceClient userClient;
 
     private static final List<String> ALLOWED_SORT_FIELDS =
             List.of("characterId", "characterClass", "characterRace", "level", "creationDate");
 
     //Create Character
-/*    @Override
+    @Override
     public CharacterDto createCharacter(CharacterDto characterDto) {
-        User user = userRepository.findById(characterDto.getUserId())
-                .orElseThrow(() ->new ResourceNotFoundException("User", "userId",String.valueOf(characterDto.getUserId())));
+        // Validate user exists via Feign client
+        UserDto user = userClient.getUserById(characterDto.getUserId());
+        if (user == null) {
+            throw new ResourceNotFoundException("User", "userId", String.valueOf(characterDto.getUserId()));
+        }
 
+        // Map DTO to Character entity
         Character character = CharacterMapper.mapToCharacter(characterDto, user);
+
+        // Save Character
         Character savedCharacter = charactersRepository.save(character);
+
+        // Map back to DTO
         return CharacterMapper.mapToCharacterDto(savedCharacter);
-    }*/
+    }
 
     //Return all Characters
     @Override
@@ -126,4 +140,10 @@ public class CharacterServiceImpl implements ICharacterService {
         Pageable pageable = PageRequest.of(page, size, sort);
         return charactersRepository.findAll(pageable).map(CharacterMapper::mapToCharacterDto);
     }
+
+	@Override
+	public List<CharacterDto> getCharactersByUserId(Long userId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

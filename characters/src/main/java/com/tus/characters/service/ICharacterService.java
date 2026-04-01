@@ -10,13 +10,13 @@ import org.springframework.data.domain.Page;
 public interface ICharacterService {
 
 	//Create New Character
-   // CharacterDto createCharacter(CharacterDto characterDto);
+    CharacterDto createCharacter(CharacterDto characterDto);
     
     //Get All Characters
     List<CharacterDto> getAllCharacters();
     
     //Get User Characters
-  //  List<CharacterDto> getCharactersByUserId(Long userId);
+    List<CharacterDto> getCharactersByUserId(Long userId);
     
     //Delete Character
     void deleteCharacter(Long characterId);
