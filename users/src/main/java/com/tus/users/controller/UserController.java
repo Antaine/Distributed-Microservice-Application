@@ -66,4 +66,9 @@ public class UserController {
 
         return ResponseEntity.ok(updatedUserDto);
     }
+    
+    @GetMapping("/health")
+    public ResponseEntity<String> health() {
+        return ResponseEntity.ok("OK");
+    }
 }
