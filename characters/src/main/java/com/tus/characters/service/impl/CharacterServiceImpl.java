@@ -8,7 +8,11 @@ import com.tus.characters.exceptions.ResourceNotFoundException;
 import com.tus.characters.mapper.CharacterMapper;
 import com.tus.characters.repository.CharactersRepository;
 import com.tus.characters.service.ICharacterService;
+
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -19,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class CharacterServiceImpl implements ICharacterService {
 
     private final CharactersRepository charactersRepository;
@@ -31,9 +36,20 @@ public class CharacterServiceImpl implements ICharacterService {
 
     // Create Character
     @Override
+    @CircuitBreaker(name = "userService", fallbackMethod = "fallbackUser")
     public CharacterDto createCharacter(CharacterDto characterDto) {
-        // Validate user exists via Feign client
-        UserDto user = userClient.getUserById(characterDto.getUserId());
+        log.info("Calling User Service for userId: {}", characterDto.getUserId());
+
+        UserDto user;
+        try {
+            // Validate user exists via Feign client
+            user = userClient.getUserById(characterDto.getUserId());
+        } catch (Exception e) {
+            // Wrap any exception into RuntimeException so Resilience4j triggers fallback
+            log.error("Feign call to User Service failed for userId {}: {}", characterDto.getUserId(), e.getMessage());
+            throw new RuntimeException("User service unavailable", e);
+        }
+
         if (user == null) {
             throw new ResourceNotFoundException("User", "userId", String.valueOf(characterDto.getUserId()));
         }
@@ -46,6 +62,19 @@ public class CharacterServiceImpl implements ICharacterService {
 
         // Map back to DTO
         return CharacterMapper.mapToCharacterDto(savedCharacter);
+    }
+    
+ // Fallback method
+    public CharacterDto fallbackUser(CharacterDto characterDto, Throwable t) {
+        log.error("Fallback triggered for createCharacter: User Service unavailable. Reason: {}", t.getMessage());
+
+        // Optional: return partial/default character to keep service responsive
+        CharacterDto fallbackCharacter = new CharacterDto();
+        fallbackCharacter.setUserId(characterDto.getUserId());
+        fallbackCharacter.setCharacterClass("Unknown");
+        fallbackCharacter.setLevel(1);
+
+        return fallbackCharacter;
     }
 
     // Return all Characters
