@@ -16,7 +16,7 @@ public class CharacterMapper {
         dto.setCharacterRace(character.getCharacterRace());
         dto.setLevel(character.getLevel());
         dto.setUserId(character.getUserId()); // link to the user
-        // Optional: dto.setCreationDate(character.getCreationDate());
+        dto.setCreationDate(character.getCreationDate());
         return dto;
     }
 

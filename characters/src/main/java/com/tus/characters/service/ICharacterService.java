@@ -19,7 +19,8 @@ public interface ICharacterService {
     List<CharacterDto> getCharactersByUserId(Long userId);
     
     //Delete Character
-    void deleteCharacter(Long characterId);
+   //	 void deleteCharacter(Long characterId);
+    void deleteCharacter(Long characterId, Long userId);
     
     //Get Character by Date Range
     List<CharacterDto> getCharactersByDateRange(LocalDate startDate,LocalDate endDate);

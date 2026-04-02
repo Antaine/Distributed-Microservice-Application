@@ -3,6 +3,9 @@ package com.tus.characters.dto;
 import lombok.Data;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+
+import java.time.LocalDate;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
@@ -27,4 +30,6 @@ public class CharacterDto {
     //Level >0 & <21
     @Min(1)@Max(20)
     private int level;
+    
+    private LocalDate creationDate;
 }
