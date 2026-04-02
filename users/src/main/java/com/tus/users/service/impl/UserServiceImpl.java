@@ -3,7 +3,9 @@ package com.tus.users.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 
+import com.tus.users.dto.CharacterDto;
 import com.tus.users.dto.UserDto;
 import com.tus.users.entity.User;
 import com.tus.users.exceptions.ResourceNotFoundException;
@@ -23,6 +25,7 @@ public class UserServiceImpl implements IUserService {
 	private static final String USER = "User";
 	private static final String USER_ID = "userId";
     private final UserRepository userRepository;
+    private final WebClient webClient;
 
     @Override
     public User createUser(UserDto userDto) {
@@ -78,4 +81,32 @@ public class UserServiceImpl implements IUserService {
     }
 
 
+    public List<CharacterDto> getCharactersByUserId(Long userId) {
+        return webClient.get()
+                .uri("http://character-service/api/characters/user/" + userId)
+                .retrieve()
+                .bodyToFlux(CharacterDto.class)
+                .collectList()
+                .block();
+    }
+    
+    @Override
+    public UserDto getUserWithCharacters(Long userId) {
+
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new ResourceNotFoundException(
+                "User", "userId", String.valueOf(userId)
+            ));
+
+        List<CharacterDto> characters = getCharactersByUserId(userId);
+
+        UserDto dto = new UserDto();
+        dto.setUserId(user.getUserId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setMobileNumber(user.getMobileNumber());
+        dto.setCharacters(characters);
+
+        return dto;
+    }
 }

@@ -1,6 +1,7 @@
 package com.tus.characters.repository;
 
-import com.tus.characters.entity.Character;
+import com.tus.characters.entity.GameCharacter;
+import com.tus.characters.entity.User;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,19 +15,20 @@ import java.util.List;
  * List<Character> findByUser(User user); becomes SELECT * FROM characters WHERE user_id = ?
  * Pagination handled here.
  */
-public interface CharactersRepository extends JpaRepository<Character, Long> {
-
-    //List<Character> findByUser(User user);
+public interface CharactersRepository extends JpaRepository<GameCharacter, Long> {
 
     // For date range (all results)
-    List<Character> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
+    List<GameCharacter> findByCreationDateBetween(LocalDate startDate, LocalDate endDate);
 
     // For paginated date range
-    List<Character> findByCreationDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
+    List<GameCharacter> findByCreationDateBetween(LocalDate startDate, LocalDate endDate, Pageable pageable);
     
     // Pagination for all characters
-    Page<Character> findAll(Pageable pageable);
+    Page<GameCharacter> findAll(Pageable pageable);
 
     // Get all characters for a user with pagination
-   // Page<Character> findByUser(User user, Pageable pageable);
+    Page<GameCharacter> findByUserId(Long userId, Pageable pageable);
+    
+    List<GameCharacter> findByUserId(Long userId);
+    
 }

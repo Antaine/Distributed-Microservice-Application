@@ -71,4 +71,9 @@ public class UserController {
     public ResponseEntity<String> health() {
         return ResponseEntity.ok("OK");
     }
+    
+    @GetMapping("/{id}/with-characters")
+    public ResponseEntity<UserDto> getUserWithCharacters(@PathVariable Long id) {
+        return ResponseEntity.ok(userService.getUserWithCharacters(id));
+    }
 }

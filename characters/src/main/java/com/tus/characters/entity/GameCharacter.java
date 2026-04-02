@@ -13,7 +13,7 @@ import java.time.LocalDate;
  * Includes Character class, race, level and creation date
  */
 @Entity@Table(name = "characters")@Getter@Setter@NoArgsConstructor@AllArgsConstructor@ToString
-public class Character extends BaseEntity {
+public class GameCharacter extends BaseEntity {
 
 	//Primary Key
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)@Column(name = "character_id")
@@ -34,6 +34,7 @@ public class Character extends BaseEntity {
     private LocalDate creationDate;
 
     // Many characters belong to one user, Foreign KEY to User table, Loaded only when needed
+    @Column(name = "user_id")
     private Long userId;
 
    //Sets Creation Date to Today

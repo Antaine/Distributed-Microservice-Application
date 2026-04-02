@@ -20,8 +20,5 @@ CREATE TABLE IF NOT EXISTS characters (
   created_at TIMESTAMP NOT NULL,
   created_by VARCHAR(50) NOT NULL,
   updated_at TIMESTAMP NULL,
-  updated_by VARCHAR(50) NULL,
-  CONSTRAINT fk_user FOREIGN KEY (user_id)
-    REFERENCES users(user_id)
-    ON DELETE CASCADE
+  updated_by VARCHAR(50) NULL
 );

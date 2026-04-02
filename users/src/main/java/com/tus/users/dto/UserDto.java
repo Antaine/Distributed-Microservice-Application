@@ -35,5 +35,5 @@ public class UserDto {
     @Size(min = 6, max = 50, message = "Password length must be between 6 and 20")
     private String password; 
     
-   // private List<CharacterDto> characters;
+   private List<CharacterDto> characters;
 }

@@ -24,14 +24,18 @@ public class CharactersController {
 	private final ICharacterService characterService;
 
     // Create a new character
-/*	@Operation(summary = "Create new character")
-    @PostMapping
-    public ResponseEntity<ResponseDto> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
-        characterService.createCharacter(characterDto);
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(new ResponseDto(CharacterConstants.STATUS_201, CharacterConstants.MESSAGE_201_CREATE));
-    }*/
+	@Operation(summary = "Create new character")
+	@PostMapping
+	public ResponseEntity<?> createCharacter(@Valid @RequestBody CharacterDto characterDto) {
+	    try {
+	        CharacterDto saved = characterService.createCharacter(characterDto);
+	        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                             .body(Map.of("error", e.getMessage()));
+	    }
+	}
 
     // Get all characters
     @GetMapping
@@ -43,13 +47,13 @@ public class CharactersController {
     }
 
     // Get characters by user ID
- /*   @GetMapping("/user/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<CharacterDto>> getCharactersByUserId(@PathVariable Long userId) {
         List<CharacterDto> characters = characterService.getCharactersByUserId(userId);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(characters);
-    }*/
+    }
 
     // Delete a character by ID
     @DeleteMapping("/{characterId}")
