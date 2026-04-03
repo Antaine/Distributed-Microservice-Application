@@ -1,6 +1,12 @@
 server:
   port: 8080
 spring:
+  security:
+    user:
+      name: admin
+      password: admin
+  config:
+    import: optional:configserver:http://localhost:8888
   application:
     name: api-gateway
   main:

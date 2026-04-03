@@ -2,6 +2,8 @@ server:
   port: 8082
 
 spring:
+  config:
+    import: optional:configserver:http://localhost:8888
   cloud:
     openfeign:
       client:
@@ -45,5 +47,8 @@ resilience4j:
   retry:
     instances:
       userService:
-      maxRetryAttempts: 3
-      waitDuration: 1s
+        maxAttempts: 3
+        waitDuration: 1s
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"

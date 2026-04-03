@@ -79,7 +79,7 @@ public class CharacterServiceImpl implements ICharacterService {
     
  // Fallback method
     public CharacterDto fallbackUser(CharacterDto characterDto, Throwable t) {
-    	log.warn("Fallback triggered (User Service DOWN): {}", t.getMessage());
+    	log.warn("Fallback triggered (User Service DOWN): {}", t.getMessage());	
 
         CharacterDto fallbackCharacter = new CharacterDto();
         fallbackCharacter.setUserId(characterDto.getUserId() != null ? characterDto.getUserId() : -1L);
