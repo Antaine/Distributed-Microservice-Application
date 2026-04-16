@@ -1,5 +1,4 @@
 package com.tus.users.controller;
-
 import com.tus.users.dto.UserDto;
 import com.tus.users.entity.User;
 import com.tus.users.mapper.UserMapper;
@@ -12,6 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,13 +24,18 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final IUserService userService;
+    private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @PostMapping
     public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
-        // Create user entity
+
+        log.info("➡️ Creating user: {}", userDto.getUsername());
+
         User user = userService.createUser(userDto);
-        // Map back to DTO for response
+
         UserDto response = UserMapper.mapToUserDto(user, new UserDto());
+
+        log.info("✅ User created with ID: {}", response.getUserId());
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

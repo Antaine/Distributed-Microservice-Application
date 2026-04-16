@@ -30,6 +30,9 @@ public class User extends BaseEntity {
     //Optional User Data
     @Column(name = "mobile_number", length = 20, nullable = true) 
     private String mobileNumber;
+    
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
     // One to Many Relationship
  /*   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

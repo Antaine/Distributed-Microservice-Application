@@ -120,16 +120,29 @@ public class CharacterServiceImpl implements ICharacterService {
         }
 
         return charactersRepository.findByUserId(userId)
-                .stream()
-                .map(CharacterMapper::mapToCharacterDto)
+        		.stream()
+                .map(character -> {
+                    CharacterDto dto = CharacterMapper.mapToCharacterDto(character);
+                    dto.setUserName(user.getUsername());
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
     
     public List<CharacterDto> fallbackUserList(Long userId, Throwable t) {
         log.error("Fallback triggered for getCharactersByUserId: {}", t.getMessage());
 
-        // Return empty list instead of crashing
-        return Collections.emptyList();
+        return charactersRepository.findByUserId(userId)
+                .stream()
+                .map(character -> {
+                    CharacterDto dto = CharacterMapper.mapToCharacterDto(character);
+
+                    // 👇 Show degraded experience
+                    dto.setUserName("Unavailable (fallback)");
+
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     // Delete Character
@@ -210,4 +223,6 @@ public class CharacterServiceImpl implements ICharacterService {
                 .onCallNotPermitted(event ->
                         log.error("Call blocked because CircuitBreaker is OPEN"));
     }
+    
+    
 }

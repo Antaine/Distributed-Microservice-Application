@@ -32,4 +32,5 @@ public class CharacterDto {
     private int level;
     
     private LocalDate creationDate;
+    private String userName;
 }
